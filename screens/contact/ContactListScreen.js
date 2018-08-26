@@ -96,14 +96,18 @@ class ContactListScreen extends Component {
             <Text style={styles.text} numberOfLines={1}>
               {rowData.Name}
             </Text>
-            <Text style={styles.date} numberOfLines={1}>
-              {rowData.Description}
-            </Text>
-            <Text style={styles.date} numberOfLines={1}>
-              {rowData.LastModifiedDate
-                ? moment(rowData.LastModifiedDate).format('LLL')
-                : moment(rowData.CreatedDate).format('LLL')}
-            </Text>
+            {rowData.Description && (
+              <Text style={styles.date} numberOfLines={1}>
+                {rowData.Description}
+              </Text>
+            )}
+            {rowData.LastModifiedDate && (
+              <Text style={styles.date} numberOfLines={1}>
+                {rowData.LastModifiedDate
+                  ? moment(rowData.LastModifiedDate).format('LLL')
+                  : moment(rowData.CreatedDate).format('LLL')}
+              </Text>
+            )}
           </View>
           <View style={styles.iconView}>
             <Ionicons
@@ -136,11 +140,13 @@ class ContactListScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <SearchBar
+          lightTheme={false}
           containerStyle={{
-            backgroundColor: colors.green,
-            borderColor: colors.borderGreen
+            borderTopColor: colors.green,
+            borderBottomColor: colors.green,
+            backgroundColor: colors.green
           }}
-          inputStyle={{ backgroundColor: 'rgba(0,0,0,0.3)', color: 'white' }}
+          inputStyle={{ backgroundColor: 'rgba(0,0,0,0.2)', color: 'white' }}
           placeholderTextColor="#E0E0E0"
           textInputRef={this.state.searchText}
           onChangeText={this.setSearchText.bind(this)}
@@ -166,9 +172,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#333',
-    fontWeight: 'bold',
+    fontWeight: '500',
     fontSize: 18,
-    height: 28
+    height: 22
   },
   infoSection: {
     flex: 1,
@@ -189,7 +195,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#DDDDDD',
     height: 80,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   searchBar: {
     paddingLeft: 30,
@@ -201,7 +208,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     color: '#333',
-    fontWeight: 'bold'
+    fontWeight: '500'
   }
 });
 
