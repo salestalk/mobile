@@ -2,47 +2,54 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createBottomTabNavigator } from 'react-navigation';
 import { DashboardNavigator, ContactNavigator } from '../stacks';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { SettingsScreen } from '../../screens/settings';
 
 const mainTabNavigator = createBottomTabNavigator(
   {
     Home: {
-      screen: SettingsScreen,
-      path: '',
+      screen: DashboardNavigator,
+      path: 'dashboard',
       navigationOptions: {
-        tabBarLabel: 'Dashboard',
+        tabBarLabel: 'dashboard',
         tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-home' : 'ios-home-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
+          <Feather name={'home'} size={26} style={{ color: tintColor }} />
         )
       }
     },
     Contacts: {
-      screen: SettingsScreen,
+      screen: ContactNavigator,
       path: 'contacts',
       navigationOptions: {
-        tabBarLabel: 'Contacts',
+        tabBarLabel: 'contacts',
         tabBarIcon: ({ tintColor, focused }) => (
-          <Ionicons
-            name={focused ? 'ios-people' : 'ios-people-outline'}
-            size={26}
-            style={{ color: tintColor }}
-          />
+          <Feather name={'users'} size={26} style={{ color: tintColor }} />
         )
       }
     },
     Settings: {
       screen: SettingsScreen,
-      path: 'settings'
+      path: 'settings',
+      navigationOptions: {
+        tabBarLabel: 'settings',
+        tabBarIcon: ({ tintColor, focused }) => (
+          <Feather name={'settings'} size={26} style={{ color: tintColor }} />
+        )
+      }
     }
   },
   {
     tabBarOptions: {
-      activeTintColor: Platform.OS === 'ios' ? '#5a9f4d' : '#fff'
+      activeTintColor: '#5a9f4d',
+      inactiveTintColor: '#ddd',
+      tabStyle: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        borderTopColor: 'white'
+      },
+      style: {
+        borderTopWidth: 0
+      }
     }
   }
 );

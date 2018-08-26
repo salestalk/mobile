@@ -1,3 +1,5 @@
+export const BASE_URL = 'https://salestalktech.com/SalesAcceleration/';
+
 const asyncActionType = type => ({
   PENDING: `${type}_PENDING`,
   SUCCESS: `${type}_SUCCESS`,

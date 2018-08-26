@@ -4,6 +4,7 @@ import {
   Platform,
   StyleSheet,
   View,
+  Text,
   TouchableOpacity
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -26,18 +27,12 @@ class Banner extends Component {
   render() {
     return (
       <View style={styles.banner}>
-        <View style={styles.leftIcon}>
-          <TouchableOpacity onPress={this._backButtonPressed.bind(this)}>
-            <Ionicons name="ios-arrow-back" size={20} color="white" />
-          </TouchableOpacity>
-        </View>
         <View style={styles.middle}>
           <Image
-            source={require('../../assets/images/salestalk-logo-green.png')}
+            source={require('../assets/images/salestalk-logo-green.png')}
             style={styles.image}
           />
         </View>
-        <View style={styles.rightIcon} />
       </View>
     );
   }

@@ -1,5 +1,5 @@
 import Banner from './Banner';
 
-modules.exports = {
+module.exports = {
   Banner
 };

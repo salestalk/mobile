@@ -1,13 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { Button } from 'react-native-elements';
 import { Banner } from '../../components';
+import { colors } from '../../styles';
+import { bindActionCreators } from 'redux';
+import * as AuthenticationActionCreators from '../../actions/authentication';
 
-export class SettingsScreen extends Component {
+class SettingsScreen extends Component {
+  logOutPressed = () => {
+    this.props.deauthorize();
+  };
+
   render() {
     return (
-      <View>
-        <Text> prop </Text>
+      <View style={styles.container}>
+        <Banner navigation={this.props.navigation} />
+        <View style={styles.contentWrap}>
+          <Button
+            raised
+            icon={{ name: 'lock-open' }}
+            title="SIGN OUT"
+            backgroundColor={colors.red}
+            onPress={this.logOutPressed}
+          />
+        </View>
       </View>
     );
   }
@@ -27,7 +44,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(AuthenticationActionCreators, dispatch);
+};
 
 export default connect(
   mapStateToProps,
