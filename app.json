@@ -19,7 +19,21 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": false
+      "bundleIdentifier": "com.getsalestalk.mobile",
+      "buildNumber": "1.0",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Get a better experience in SalesTalk based on your location",
+        "NSLocationAlwaysUsageDescription": "Get a better experience in SalesTalk based on your location"
+      }
+    },
+    "android": {
+      "package": "com.getsalestalk.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/Icon-Original.png",
+        "backgroundColor": "#5a9f4d"
+      }
     }
   }
 }

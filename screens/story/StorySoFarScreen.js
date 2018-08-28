@@ -176,12 +176,12 @@ class StorySoFarScreen extends Component {
 
   _onPressBehavior(item) {
     if (item.Name.toLowerCase() === 'notes') {
-      this.props.navigation.navigate('BehaviorDetailScreen', { ...item });
+      this.props.navigation.navigate('behaviorDetailScreen', { ...item });
       return;
     }
     if (item.Type.toLowerCase() === 'activity') {
       var activityId = { activityId: item.RawValue };
-      this.props.navigation.navigate('ActivityDetailScreen', { ...activityId });
+      this.props.navigation.navigate('activityDetailScreen', { ...activityId });
       return;
     }
   }
@@ -211,6 +211,7 @@ class StorySoFarScreen extends Component {
         key={`${rowId}`}
         title={this._getBehaviorTitle(rowData.item)}
         subtitle={moment(rowData.item.CreatedDate).format('LLLL')}
+        subtitleStyle={{ fontWeight: '300' }}
         leftIcon={{ color: colors.green, name: iconName, type: 'ionicons' }}
         onPress={() => this._onPressBehavior(rowData.item)}
       />
@@ -227,6 +228,7 @@ class StorySoFarScreen extends Component {
         titleStyle={{
           color: (item.textColor || colors.green).toLowerCase()
         }}
+        subtitleStyle={{ fontWeight: 300 }}
         leftIcon={{
           color: (item.iconColor || colors.green).toLowerCase(),
           name: icon,
@@ -329,10 +331,12 @@ class StorySoFarScreen extends Component {
         <View style={styles.view}>
           <View style={styles.upperView}>
             <View style={styles.person}>
-              <Text style={styles.name}>
+              <Text style={styles.name} numberOfLines={1}>
                 {this.state.lead.FirstName} {this.state.lead.LastName}
               </Text>
-              <Text style={styles.company}>{this.state.lead.CompanyName}</Text>
+              <Text style={styles.company} numberOfLines={1}>
+                {this.state.lead.CompanyName}
+              </Text>
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL(`mailto:${this.state.lead.Email}`).catch(
@@ -342,7 +346,9 @@ class StorySoFarScreen extends Component {
               >
                 <Text style={styles.email}>{this.state.lead.Email}</Text>
               </TouchableOpacity>
-              <Text style={styles.company}>{this.state.lead.WorkPhone}</Text>
+              <Text style={styles.company} numberOfLines={1}>
+                {this.state.lead.WorkPhone}
+              </Text>
             </View>
             <View style={styles.activityWrap}>
               <View style={styles.addNoteWrap}>
@@ -353,7 +359,9 @@ class StorySoFarScreen extends Component {
                     size={20}
                     color="#5a9f4d"
                   />
-                  <Text style={styles.buttonText}>Note</Text>
+                  <Text style={styles.buttonText} numberOfLines={1}>
+                    Note
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.addNoteWrap}>
@@ -364,7 +372,9 @@ class StorySoFarScreen extends Component {
                     size={20}
                     color="#5a9f4d"
                   />
-                  <Text style={styles.buttonText}>Meeting</Text>
+                  <Text style={styles.buttonText} numberOfLines={1}>
+                    Meeting
+                  </Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.addNoteWrap}>
@@ -375,10 +385,12 @@ class StorySoFarScreen extends Component {
                     size={20}
                     color="#5a9f4d"
                   />
-                  <Text style={styles.buttonText}>Phone Call</Text>
+                  <Text style={styles.buttonText} numberOfLines={1}>
+                    Phone Call
+                  </Text>
                 </TouchableOpacity>
               </View>
-              <View style={styles.addNoteWrap}>
+              <View style={styles.addNoteWrap} numberOfLines={1}>
                 <TouchableOpacity onPress={this._onToDoPressed}>
                   <Ionicons
                     name="ios-person-outline"

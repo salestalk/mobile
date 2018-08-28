@@ -5,7 +5,9 @@ import {
   NoteScreen,
   MeetingScreen,
   PhoneCallScreen,
-  ToDoScreen
+  ToDoScreen,
+  BehaviorDetailScreen,
+  ActivityDetailScreen
 } from '../../screens/story';
 import { colors } from '../../styles';
 
@@ -16,7 +18,9 @@ const DashboardNavigator = createStackNavigator(
     noteScreen: NoteScreen,
     meetingScreen: MeetingScreen,
     phoneCallScreen: PhoneCallScreen,
-    toDoScreen: ToDoScreen
+    toDoScreen: ToDoScreen,
+    behaviorDetailScreen: BehaviorDetailScreen,
+    activityDetailScreen: ActivityDetailScreen
   },
   {
     navigationOptions: {
