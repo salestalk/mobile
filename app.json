@@ -31,7 +31,7 @@
       "package": "com.getsalestalk.mobile",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icons/Icon-Original.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#5a9f4d"
       }
     }
