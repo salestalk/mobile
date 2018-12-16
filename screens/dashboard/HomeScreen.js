@@ -57,10 +57,15 @@ class HomeScreen extends Component {
     )
       .then(response => response.json())
       .then(responseJson => {
+        const contacts = responseJson.data.filter(lead => {
+          console.log(lead);
+          return lead.Name !== null;
+        });
+
         this.setState(
           {
             isLoading: false,
-            contacts: responseJson.data,
+            contacts,
             refreshing: false
           },
           function() {
@@ -72,7 +77,6 @@ class HomeScreen extends Component {
   };
 
   _loadUserActivities = () => {
-    console.log('updating');
     return fetch(
       `${BASE_URL}open/GetUserActivities/${this.props.auth.user.userId}`,
       {
@@ -165,11 +169,14 @@ class HomeScreen extends Component {
   }
 
   _renderActivityRow(rowData, rowId) {
-    console.log(rowData.item);
     return (
       <ListItem
         key={`${rowId}`}
-        title={<Text>{rowData.item.Action || ''}</Text>}
+        title={
+          <Text>
+            {`${rowData.item.LeadName}  - ${rowData.item.Description}` || ''}
+          </Text>
+        }
         subtitle={
           <Text style={styles.subTitle}>
             Due: {moment(rowData.item.DueDate).format('LLL')}
@@ -216,12 +223,16 @@ class HomeScreen extends Component {
             onPress={this._updateIndex.bind(this)}
             selectedIndex={selectedIndex}
             buttons={buttons}
-            containerStyle={{ height: 30, borderColor: colors.green }}
-            textStyle={{ color: colors.green }}
-            selectedButtonStyle={{ backgroundColor: colors.green }}
+            containerStyle={{
+              height: 40,
+              borderColor: '#424242',
+              backgroundColor: 'white'
+            }}
+            textStyle={{ color: '#424242', fontSize: 16, fontWeight: '300' }}
+            selectedButtonStyle={{ backgroundColor: '#424242' }}
             selectedTextStyle={{
               color: colors.white,
-              backgroundColor: colors.green
+              backgroundColor: '#424242'
             }}
           />
           {this._renderBottom()}
@@ -237,13 +248,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   upperView: {
-    height: 200,
+    height: 220,
     backgroundColor: colors.white
   },
   greenBanner: {
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    paddingTop: Platform.OS === 'ios' ? 40 : 20,
     backgroundColor: colors.green,
-    height: 80,
+    height: 100,
     alignItems: 'center',
     justifyContent: 'center'
   },

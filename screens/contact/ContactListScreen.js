@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import moment from 'moment';
 import { colors } from '../../styles';
 import { connect } from 'react-redux';
@@ -19,10 +19,11 @@ const URI = `${BASE_URL}open/list`;
 
 class ContactListScreen extends Component {
   static navigationOptions = {
-    title: 'List Detail',
+    title: 'Contacts',
     headerTintColor: colors.white,
     headerStyle: {
-      backgroundColor: colors.green
+      backgroundColor: colors.green,
+      borderBottomWidth: 0
     },
     headerBackTitle: ''
   };
@@ -110,11 +111,7 @@ class ContactListScreen extends Component {
             )}
           </View>
           <View style={styles.iconView}>
-            <Ionicons
-              name="ios-arrow-dropright-outline"
-              size={20}
-              color="#5a9f4d"
-            />
+            <Feather name="chevron-right" size={20} color="#5a9f4d" />
           </View>
         </View>
       </TouchableOpacity>
@@ -146,7 +143,12 @@ class ContactListScreen extends Component {
             borderBottomColor: colors.green,
             backgroundColor: colors.green
           }}
-          inputStyle={{ backgroundColor: 'rgba(0,0,0,0.2)', color: 'white' }}
+          style={{ fontSize: 13 }}
+          inputStyle={{
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            fontSize: 14,
+            color: 'white'
+          }}
           placeholderTextColor="#E0E0E0"
           textInputRef={this.state.searchText}
           onChangeText={this.setSearchText.bind(this)}

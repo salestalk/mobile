@@ -1,23 +1,23 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   Text,
   View,
-  Modal,
   WebView,
   TouchableHighlight,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   FlatList,
-  Linking,
-  ActivityIndicator
+  Linking
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Ionicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { colors } from '../../styles';
 import { BASE_URL } from '../../constants';
+import { formatPhoneNumber } from '../../lib';
 
 class StorySoFarScreen extends Component {
   static navigationOptions = {
@@ -210,9 +210,10 @@ class StorySoFarScreen extends Component {
       <ListItem
         key={`${rowId}`}
         title={this._getBehaviorTitle(rowData.item)}
+        titleStyle={{ fontSize: 14, fontWeight: '500' }}
         subtitle={moment(rowData.item.CreatedDate).format('LLLL')}
-        subtitleStyle={{ fontWeight: '300' }}
-        leftIcon={{ color: colors.green, name: iconName, type: 'ionicons' }}
+        subtitleStyle={{ fontWeight: '300', fontSize: 13 }}
+        leftIcon={{ color: '#6d6d6d', name: iconName, type: 'ionicons' }}
         onPress={() => this._onPressBehavior(rowData.item)}
       />
     );
@@ -332,7 +333,8 @@ class StorySoFarScreen extends Component {
           <View style={styles.upperView}>
             <View style={styles.person}>
               <Text style={styles.name} numberOfLines={1}>
-                {this.state.lead.FirstName} {this.state.lead.LastName}
+                {_.capitalize(this.state.lead.FirstName)}{' '}
+                {_.capitalize(this.state.lead.LastName)}
               </Text>
               <Text style={styles.company} numberOfLines={1}>
                 {this.state.lead.CompanyName}
@@ -347,17 +349,17 @@ class StorySoFarScreen extends Component {
                 <Text style={styles.email}>{this.state.lead.Email}</Text>
               </TouchableOpacity>
               <Text style={styles.company} numberOfLines={1}>
-                {this.state.lead.WorkPhone}
+                {formatPhoneNumber(this.state.lead.WorkPhone)}
               </Text>
             </View>
             <View style={styles.activityWrap}>
               <View style={styles.addNoteWrap}>
                 <TouchableOpacity onPress={this._onAddNotePressed}>
-                  <Ionicons
-                    name="ios-paper-outline"
-                    style={{ alignSelf: 'center' }}
+                  <Feather
+                    name="edit"
+                    style={{ alignSelf: 'center', marginBottom: 5 }}
                     size={20}
-                    color="#5a9f4d"
+                    color={segmentColor}
                   />
                   <Text style={styles.buttonText} numberOfLines={1}>
                     Note
@@ -366,11 +368,11 @@ class StorySoFarScreen extends Component {
               </View>
               <View style={styles.addNoteWrap}>
                 <TouchableOpacity onPress={this._onAppointmentPressed}>
-                  <Ionicons
-                    name="ios-calendar-outline"
-                    style={{ alignSelf: 'center' }}
+                  <Feather
+                    name="calendar"
+                    style={{ alignSelf: 'center', marginBottom: 5 }}
                     size={20}
-                    color="#5a9f4d"
+                    color={segmentColor}
                   />
                   <Text style={styles.buttonText} numberOfLines={1}>
                     Meeting
@@ -379,11 +381,11 @@ class StorySoFarScreen extends Component {
               </View>
               <View style={styles.addNoteWrap}>
                 <TouchableOpacity onPress={this._onPhoneCallPressed}>
-                  <Ionicons
-                    name="ios-call-outline"
-                    style={{ alignSelf: 'center' }}
+                  <Feather
+                    name="phone-call"
+                    style={{ alignSelf: 'center', marginBottom: 5 }}
                     size={20}
-                    color="#5a9f4d"
+                    color={segmentColor}
                   />
                   <Text style={styles.buttonText} numberOfLines={1}>
                     Phone Call
@@ -392,11 +394,11 @@ class StorySoFarScreen extends Component {
               </View>
               <View style={styles.addNoteWrap} numberOfLines={1}>
                 <TouchableOpacity onPress={this._onToDoPressed}>
-                  <Ionicons
-                    name="ios-person-outline"
-                    style={{ alignSelf: 'center' }}
+                  <Feather
+                    name="user-check"
+                    style={{ alignSelf: 'center', marginBottom: 5 }}
                     size={20}
-                    color="#5a9f4d"
+                    color={segmentColor}
                   />
                   <Text style={styles.buttonText}>To Do</Text>
                 </TouchableOpacity>
@@ -475,6 +477,8 @@ class StorySoFarScreen extends Component {
   }
 }
 
+const segmentColor = '#424242';
+
 const styles = StyleSheet.create({
   addNoteWrap: {
     flex: 1,
@@ -482,7 +486,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: colors.borderGreen,
+    borderColor: segmentColor,
     borderRadius: 3,
     margin: 4,
     padding: 4
@@ -510,6 +514,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 20,
+    fontWeight: '400',
     paddingTop: 5,
     paddingBottom: 5,
     textAlign: 'center',
@@ -539,12 +544,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: colors.green,
+    borderColor: segmentColor,
     margin: 5,
     borderRadius: 3
   },
   activeSegButton: {
-    backgroundColor: colors.green
+    backgroundColor: segmentColor
   },
   segButton: {
     flex: 1,
@@ -563,7 +568,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   segmentButtonText: {
-    color: colors.green,
+    color: segmentColor,
     fontWeight: 'bold'
   },
   segmentContent: {

@@ -11,9 +11,9 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: DashboardNavigator,
       path: 'dashboard',
       navigationOptions: {
-        tabBarLabel: 'dashboard',
+        tabBarLabel: 'Dashboard',
         tabBarIcon: ({ tintColor, focused }) => (
-          <Feather name={'home'} size={26} style={{ color: tintColor }} />
+          <Feather name={'home'} size={24} style={{ color: tintColor }} />
         )
       }
     },
@@ -21,9 +21,9 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: ContactNavigator,
       path: 'contacts',
       navigationOptions: {
-        tabBarLabel: 'contacts',
+        tabBarLabel: 'Contacts',
         tabBarIcon: ({ tintColor, focused }) => (
-          <Feather name={'users'} size={26} style={{ color: tintColor }} />
+          <Feather name={'users'} size={24} style={{ color: tintColor }} />
         )
       }
     },
@@ -31,21 +31,21 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: SettingsScreen,
       path: 'settings',
       navigationOptions: {
-        tabBarLabel: 'settings',
+        tabBarLabel: 'Settings',
         tabBarIcon: ({ tintColor, focused }) => (
-          <Feather name={'settings'} size={26} style={{ color: tintColor }} />
+          <Feather name={'settings'} size={24} style={{ color: tintColor }} />
         )
       }
     }
   },
   {
     tabBarOptions: {
-      activeTintColor: '#5a9f4d',
+      activeTintColor: '#424242',
       inactiveTintColor: '#ddd',
       tabStyle: {
         backgroundColor: 'white',
-        borderTopWidth: 0,
-        borderTopColor: 'white'
+        borderTopWidth: 1,
+        borderTopColor: '#EEEEEE'
       },
       style: {
         borderTopWidth: 0

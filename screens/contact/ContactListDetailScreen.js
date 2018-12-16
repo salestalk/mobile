@@ -1,20 +1,19 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   Text,
   View,
-  ScrollView,
   StyleSheet,
-  Button,
   ListView,
   ActivityIndicator,
   TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Feather } from '@expo/vector-icons';
 import moment from 'moment';
 import { colors } from '../../styles';
 import { BASE_URL } from '../../constants';
-
+import { formatPhoneNumber } from '../../lib';
 const URI = `${BASE_URL}open/ListLeads/`;
 
 class ContactListDetailScreen extends Component {
@@ -80,24 +79,21 @@ class ContactListDetailScreen extends Component {
         <View style={styles.row}>
           <View style={styles.infoSection}>
             <Text style={styles.text} numberOfLines={1}>
-              {rowData.LastName}, {rowData.FirstName}
+              {_.capitalize(rowData.LastName)},{' '}
+              {_.capitalize(rowData.FirstName)}
             </Text>
-            <Text style={styles.date} numberOfLines={1}>
+            <Text style={styles.title} numberOfLines={1}>
               {rowData.Title}
             </Text>
             <Text style={styles.date} numberOfLines={1}>
-              {rowData.WorkPhone}
+              {formatPhoneNumber(rowData.WorkPhone)}
             </Text>
             <Text style={styles.date} numberOfLines={1}>
               {moment(rowData.LastModifiedDate).format('LLL')}
             </Text>
           </View>
           <View style={styles.iconView}>
-            <Ionicons
-              name="ios-arrow-dropright-outline"
-              size={20}
-              color="#5a9f4d"
-            />
+            <Feather name="chevron-right" size={20} color="#5a9f4d" />
           </View>
         </View>
       </TouchableOpacity>
@@ -136,11 +132,15 @@ const styles = StyleSheet.create({
     color: '#777',
     fontSize: 12
   },
+  title: {
+    color: '#777',
+    fontSize: 12,
+    marginBottom: 5
+  },
   text: {
     color: '#333',
-    fontWeight: 'bold',
-    fontSize: 18,
-    height: 23
+    fontWeight: '500',
+    fontSize: 16
   },
   infoSection: {
     flex: 1,
@@ -157,10 +157,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     padding: 4,
+    paddingVertical: 10,
     backgroundColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#DDDDDD',
-    height: 80,
     justifyContent: 'space-between'
   },
   searchBar: {

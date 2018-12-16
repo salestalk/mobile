@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
   banner: {
     backgroundColor: colors.green,
     flexDirection: 'row',
-    height: 64,
+    height: 80,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: Platform.OS === 'ios' ? 20 : 0,
+    paddingTop: Platform.OS === 'ios' ? 40 : 20,
     paddingHorizontal: 12
   },
   image: {
