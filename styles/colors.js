@@ -1,5 +1,8 @@
-export const green = '#5a9f4d';
+export const green = '#2e7d32';
 export const borderGreen = '#418634';
+export const LIGHT_GREEN = '#60ad5e';
+export const DARK_GREEN = '#005005';
+export const GREY = '#BDBDBD';
 export const gray = 'rgba(0,0,0,.55)';
 export const white = 'white';
 export const red = 'rgba(244, 67, 54, 1.0)';

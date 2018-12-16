@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from 'react-navigation';
 import { DashboardNavigator, ContactNavigator } from '../stacks';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { SettingsScreen } from '../../screens/settings';
+import { colors } from '../../styles';
 
 const mainTabNavigator = createBottomTabNavigator(
   {
@@ -40,8 +41,8 @@ const mainTabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: '#424242',
-      inactiveTintColor: '#ddd',
+      activeTintColor: colors.DARK_GREEN,
+      inactiveTintColor: colors.GREY,
       tabStyle: {
         backgroundColor: 'white',
         borderTopWidth: 1,

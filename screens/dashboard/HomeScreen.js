@@ -156,11 +156,11 @@ class HomeScreen extends Component {
     return (
       <ListItem
         key={`${rowId}`}
-        wrapperStyle={{ borderBottomColor: colors.green }}
-        title={<Text>{rowData.item.Name || ''}</Text>}
-        subtitle={
-          <Text style={styles.subTitle}>{rowData.item.CompanyName || ''}</Text>
-        }
+        wrapperStyle={{ borderBottomColor: colors.green, height: 50 }}
+        title={_.capitalize(rowData.item.Name || '')}
+        titleStyle={{ fontSize: 18, fontWeight: '600' }}
+        subtitle={_.capitalize(rowData.item.CompanyName || '')}
+        subtitleStyle={{ fontWeight: '400' }}
         onPress={() => {
           this._selectContact(rowData.item, rowId);
         }}
@@ -199,7 +199,7 @@ class HomeScreen extends Component {
               style={styles.image}
             />
           </View>
-          <View style={styles.recentWrap}>
+          {/* <View style={styles.recentWrap}>
             <View style={styles.recentItem}>
               <View style={styles.giantCircle}>
                 <Text style={styles.recentItemNumber}>
@@ -217,6 +217,7 @@ class HomeScreen extends Component {
               <Text style={styles.recentItemLabel}>Upcoming Activities</Text>
             </View>
           </View>
+         */}
         </View>
         <View style={styles.lowerView}>
           <ButtonGroup
@@ -225,14 +226,18 @@ class HomeScreen extends Component {
             buttons={buttons}
             containerStyle={{
               height: 40,
-              borderColor: '#424242',
+              borderColor: colors.DARK_GREEN,
               backgroundColor: 'white'
             }}
-            textStyle={{ color: '#424242', fontSize: 16, fontWeight: '300' }}
-            selectedButtonStyle={{ backgroundColor: '#424242' }}
+            textStyle={{
+              color: colors.DARK_GREEN,
+              fontSize: 16,
+              fontWeight: '300'
+            }}
+            selectedButtonStyle={{ backgroundColor: colors.DARK_GREEN }}
             selectedTextStyle={{
               color: colors.white,
-              backgroundColor: '#424242'
+              backgroundColor: colors.DARK_GREEN
             }}
           />
           {this._renderBottom()}
@@ -248,7 +253,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   upperView: {
-    height: 220,
+    height: 105,
     backgroundColor: colors.white
   },
   greenBanner: {
@@ -286,7 +291,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   giantCircle: {
-    backgroundColor: colors.green,
+    backgroundColor: colors.DARK_GREEN,
     height: 60,
     width: 60,
     borderRadius: 30,
@@ -303,7 +308,7 @@ const styles = StyleSheet.create({
   recentItemLabel: {
     fontSize: 18,
     fontWeight: '500',
-    color: colors.green
+    color: colors.DARK_GREEN
   },
   subTitle: {
     color: colors.gray,
