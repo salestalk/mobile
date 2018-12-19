@@ -58,9 +58,7 @@ class ContactListScreen extends Component {
           function() {}
         );
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   }
 
   componentDidMount() {

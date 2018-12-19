@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { LoginScreen } from './authentication';
 import { MainTabNavigator } from '../navigation/tabs';
+import TimeSheetNavigator from '../navigation/stacks/TimeSheetNavigator';
 
 class RootContainer extends Component {
   constructor(props) {
@@ -11,8 +12,18 @@ class RootContainer extends Component {
   }
 
   render() {
-    if (this.props.auth.user) {
-      return <MainTabNavigator />;
+    const { user } = this.props.auth;
+    if (user) {
+      if (user.timeSheetOnly) {
+        return (
+          <View style={{ flex: 1 }}>
+            <StatusBar barStyle={'default'} />
+            <TimeSheetNavigator screenProps={{ user }} />
+          </View>
+        );
+      } else {
+        return <MainTabNavigator />;
+      }
     }
     return <LoginScreen />;
   }

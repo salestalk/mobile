@@ -69,9 +69,7 @@ class StorySoFarScreen extends Component {
       );
       const navigator = await response.json();
       this.setState({ navigator });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   _onAddNotePressed = () => {

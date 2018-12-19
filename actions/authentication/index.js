@@ -3,7 +3,6 @@ import { LOGIN, LOGOUT } from '../../constants';
 const URI = `https://salestalktech.com/SalesAcceleration/open/login`;
 
 export function loginRequestSuccess(user) {
-  console.log('here');
   return dispatch => {
     dispatch({
       type: LOGIN.SUCCESS,
@@ -42,7 +41,6 @@ export function loginRequest(userName, password) {
         return response.json();
       })
       .then(responseJson => {
-        console.log(responseJson);
         if (responseJson.error.length > 0) {
           Alert.alert(
             'Invalid Credentials',
@@ -59,8 +57,6 @@ export function loginRequest(userName, password) {
         }
       })
       .catch(error => {
-        console.log('=== Error Login ===');
-        console.log(error);
         dispatch(loginRequestError('Unable to Login'));
         dispatch(resetLogin());
       });

@@ -33,7 +33,6 @@ class ToDoScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
     var startDate = new Date();
     startDate.setMinutes(startDate.getMinutes() + 30);
     startDate.setMinutes(0);
@@ -143,9 +142,7 @@ class ToDoScreen extends Component {
           this.props.navigation.goBack(null);
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   _nameChanged = () => {};

@@ -33,7 +33,6 @@ class MeetingScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.navigation.state.params);
     var startDate = new Date();
     startDate.setMinutes(startDate.getMinutes() + 30);
     startDate.setMinutes(0);
@@ -132,7 +131,6 @@ class MeetingScreen extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
         if (responseJson.error.length > 0) {
           Alert.alert(
             'Error Saving Note Please Try Again',
@@ -147,9 +145,7 @@ class MeetingScreen extends Component {
           this.props.navigation.goBack(null);
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   _nameChanged = () => {};

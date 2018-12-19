@@ -36,7 +36,6 @@ class ActivityDetailScreen extends Component {
   }
 
   _fetchActivityDetail = () => {
-    console.log('making call');
     return fetch(
       `${BASE_URL}open/getactivity/${this.state.activity.ActivityId}`,
       {
@@ -47,16 +46,11 @@ class ActivityDetailScreen extends Component {
       }
     )
       .then(response => response.json())
-      .then(responseJson => {
-        console.log(responseJson);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      .then(responseJson => {})
+      .catch(error => {});
   };
 
   render() {
-    console.log(this.state.activity);
     if (this.state.isLoading) {
       return (
         <View style={styles.loadingContainer}>

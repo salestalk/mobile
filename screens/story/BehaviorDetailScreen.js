@@ -24,8 +24,6 @@ class BehaviorDetailScreen extends Component {
   }
 
   render() {
-    console.log(this.state.behavior);
-
     if (this.state.isLoading) {
       return (
         <View style={styles.loadingContainer}>

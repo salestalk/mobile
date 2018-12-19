@@ -58,7 +58,6 @@ class HomeScreen extends Component {
       .then(response => response.json())
       .then(responseJson => {
         const contacts = responseJson.data.filter(lead => {
-          console.log(lead);
           return lead.Name !== null;
         });
 

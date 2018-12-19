@@ -131,7 +131,6 @@ class PhoneCallScreen extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
         if (responseJson.error.length > 0) {
           Alert.alert(
             'Error Saving Phone Call Please Try Again',
@@ -140,13 +139,10 @@ class PhoneCallScreen extends Component {
             { cancelable: false }
           );
         } else {
-          console.log(responseJson);
           this.props.navigation.goBack(null);
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
   };
 
   _nameChanged = () => {};

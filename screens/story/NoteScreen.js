@@ -65,7 +65,6 @@ class NoteScreen extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
         if (responseJson.error.length > 0) {
           Alert.alert(
             'Error Saving Note Please Try Again',
@@ -80,9 +79,7 @@ class NoteScreen extends Component {
           this.props.navigation.goBack(null);
         }
       })
-      .catch(error => {
-        console.log(error);
-      });
+      .catch(error => {});
 
     setTimeout(() => {
       this.props.navigation.goBack(null);

@@ -39,7 +39,16 @@ export default class App extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([require('./assets/images/salestalk-logo-green.png')]),
-      Font.loadAsync({})
+      Font.loadAsync({
+        'quicksand-bold': require('./assets/fonts/Quicksand-Bold.ttf'),
+        'quicksand-light': require('./assets/fonts/Quicksand-Light.ttf'),
+        'quicksand-medium': require('./assets/fonts/Quicksand-Medium.ttf'),
+        'quicksand-regular': require('./assets/fonts/Quicksand-Regular.ttf'),
+        'montserrat-bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+        'montserrat-light': require('./assets/fonts/Montserrat-Light.ttf'),
+        'montserrat-medium': require('./assets/fonts/Montserrat-Medium.ttf'),
+        'montserrat-regular': require('./assets/fonts/Montserrat-Regular.ttf')
+      })
     ]);
   };
 

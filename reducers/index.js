@@ -1,17 +1,17 @@
 import { persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
 import authReducer from './auth';
-//import userReducer from './user';
+import timeSheetReducer from '../features/timesheet/reducers';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'user']
+  whitelist: ['auth', 'timesheet']
 };
 
 const rootReducer = persistCombineReducers(persistConfig, {
-  auth: authReducer
-  //user: userReducer
+  auth: authReducer,
+  timesheet: timeSheetReducer
 });
 
 export default rootReducer;

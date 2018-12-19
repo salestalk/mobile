@@ -29,7 +29,6 @@ export default class Note extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
         this.setState({
           isLoading: false,
           note: responseJson
