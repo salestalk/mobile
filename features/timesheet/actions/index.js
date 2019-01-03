@@ -19,7 +19,6 @@ const getTimeSheet = ({ userId, tenantId, domainId }, startDate, endDate) => {
     )
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson);
         dispatch({
           type: constants.TIMESHEET_LIST.SUCCESS,
           payload: responseJson

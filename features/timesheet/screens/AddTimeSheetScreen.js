@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  TextInput,
   Keyboard,
   KeyboardAvoidingView
 } from 'react-native';
@@ -14,9 +15,9 @@ import { Constants, Haptic } from 'expo';
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { colors } from '../../../styles';
-import { getCompanyList } from '../util';
+import { getCompanyList, addTimeSheet, convertToMoment } from '../util';
 import { CompanySelectModal } from '../components';
-
+import { LoadingModal } from '../../../components';
 export default class AddTimeSheetScreen extends Component {
   static navigationOptions = {
     header: null
@@ -24,17 +25,38 @@ export default class AddTimeSheetScreen extends Component {
 
   constructor(props) {
     super(props);
+    let company = null;
+    let startDate = '';
+    let endDate = '';
+    let hours = 0;
+    let notes = '';
+    let id = 0;
+
+    if (
+      props.navigation.state.params &&
+      props.navigation.state.params.existing
+    ) {
+      const { existing } = props.navigation.state.params;
+      company = existing.CompanyId;
+      startDate = convertToMoment(existing.TaskStart).toDate();
+      endDate = convertToMoment(existing.TaskEnd).toDate();
+      notes = existing.OtherText;
+      id = existing.AgentHoursId;
+      hours = existing.NormalHours;
+    }
+
     this.state = {
+      id,
       laoding: false,
       isStartDateTimePickerVisible: false,
       isEndDateTimePickerVisible: false,
       companies: [],
       companyModalVisible: false,
-      company: null,
-      tempCompany: '',
-      hours: 0,
-      startDate: '',
-      endDate: '',
+      company,
+      hours,
+      startDate,
+      endDate,
+      notes,
       valid: false
     };
   }
@@ -53,7 +75,6 @@ export default class AddTimeSheetScreen extends Component {
         this.setState({ loading: false, companies });
       })
       .catch(e => {
-        console.log('error', e);
         this.setState({ loading: false, companies: [] });
       });
   }
@@ -100,6 +121,45 @@ export default class AddTimeSheetScreen extends Component {
 
   submit = () => {
     if (this.valid()) {
+      this.setState({ loading: true });
+      addTimeSheet(
+        this.props.screenProps.user,
+        this.state.id,
+        moment.utc(this.state.startDate).format('YYYY-MM-DD hh:mmA'),
+        moment.utc(this.state.endDate).format('YYYY-MM-DD hh:mmA'),
+        Math.abs(this.state.endDate - this.state.startDate) / 1000 / 60 / 60,
+        this.state.company,
+        this.state.notes
+      )
+        .then(result => {
+          this.setState({ loading: false });
+          if (
+            this.props.navigation.state.params &&
+            this.props.navigation.state.params.refresh
+          ) {
+            this.props.navigation.state.params.refresh();
+          }
+          this.props.navigation.goBack();
+        })
+        .catch(e => {
+          this.setState({ loading: false });
+          console.log(e);
+        });
+    }
+  };
+
+  renderCompanyLabel = () => {
+    if (this.state.company) {
+      const filteredCompanies = this.state.companies.filter(
+        c => c.id == this.state.company
+      );
+      if (filteredCompanies.length > 0) {
+        return filteredCompanies[0].name;
+      } else {
+        return 'Choose Company...';
+      }
+    } else {
+      return 'Choose Company...';
     }
   };
 
@@ -121,7 +181,7 @@ export default class AddTimeSheetScreen extends Component {
                   fontSize: 20
                 }}
               >
-                Add Timesheet Entry
+                {`${this.state.company ? 'Edit' : 'Add'} Timesheet Entry`}
               </Text>
               <Text
                 style={{
@@ -130,7 +190,9 @@ export default class AddTimeSheetScreen extends Component {
                   fontWeight: '300'
                 }}
               >
-                create new timesheet below
+                {`${
+                  this.state.company ? 'edit' : 'create new'
+                } timesheet below`}
               </Text>
             </View>
             <View>
@@ -140,98 +202,173 @@ export default class AddTimeSheetScreen extends Component {
             </View>
           </View>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              padding: 15
-            }}
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={0}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            onScroll={() => Keyboard.dismiss()}
           >
-            <View style={styles.row}>
-              <View>
-                <Text
+            <View
+              style={{
+                padding: 15
+              }}
+            >
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Company
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={this.showCompany}>
+                  <View style={styles.inputBox}>
+                    <Text style={styles.inputPlaceholder}>
+                      {this.renderCompanyLabel()}
+                    </Text>
+                    <Feather name="chevron-down" size={20} color={'#333'} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Start Date and Time
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={this._showStartDateTimePicker}>
+                  <View style={styles.inputBox}>
+                    <Text style={styles.inputPlaceholder}>
+                      {this.state.startDate === ''
+                        ? `Choose Start Date and Time...`
+                        : moment(this.state.startDate).calendar()}
+                    </Text>
+                    <Feather name="chevron-down" size={20} color={'#333'} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    End Date and Time
+                  </Text>
+                </View>
+                <TouchableOpacity onPress={this._showEndDateTimePicker}>
+                  <View style={styles.inputBox}>
+                    <Text style={styles.inputPlaceholder}>
+                      {this.state.endDate === ''
+                        ? `Choose End Date and Time...`
+                        : moment(this.state.endDate).calendar()}
+                    </Text>
+                    <Feather name="chevron-down" size={20} color={'#333'} />
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Notes
+                  </Text>
+                </View>
+                <View style={styles.textInputBox}>
+                  <TextInput
+                    numberOfLines={3}
+                    autoCapitalize={'sentences'}
+                    autoCorrect={true}
+                    value={this.state.notes}
+                    onChangeText={text => this.setState({ notes: text })}
+                    multiline={true}
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Notes
+                  </Text>
+                </View>
+                <View style={styles.textInputBox}>
+                  <TextInput
+                    numberOfLines={3}
+                    autoCapitalize={'sentences'}
+                    autoCorrect={true}
+                    value={this.state.notes}
+                    onChangeText={text => this.setState({ notes: text })}
+                    multiline={true}
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+              </View>
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Hours
+                  </Text>
+                </View>
+                <View style={styles.textInputBox}>
+                  <TextInput
+                    numberOfLines={1}
+                    autoCapitalize={'none'}
+                    autoCorrect={true}
+                    value={this.state.hours}
+                    keyboardType={'decimal-pad'}
+                    onChangeText={text => this.setState({ hours: text })}
+                    multiline={true}
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+              </View>
+              <TouchableOpacity onPress={this.submit}>
+                <View
                   style={{
-                    fontSize: 14,
-                    fontWeight: '300'
+                    backgroundColor: this.valid()
+                      ? colors.BRIGHT_GREEN
+                      : colors.GREY,
+                    height: 50,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
                 >
-                  Company
-                </Text>
-              </View>
-              <TouchableOpacity onPress={this.showCompany}>
-                <View style={styles.inputBox}>
-                  <Text style={styles.inputPlaceholder}>
-                    {this.state.company
-                      ? this.state.companies.filter(
-                          c => c.id == this.state.company
-                        )[0].name
-                      : 'Choose Company...'}
+                  <Text style={{ color: colors.white, fontSize: 16 }}>
+                    Save Timesheet
                   </Text>
-                  <Feather name="chevron-down" size={20} color={'#333'} />
                 </View>
               </TouchableOpacity>
             </View>
-            <View style={styles.row}>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: '300'
-                  }}
-                >
-                  Start Date
-                </Text>
-              </View>
-              <TouchableOpacity onPress={this._showStartDateTimePicker}>
-                <View style={styles.inputBox}>
-                  <Text style={styles.inputPlaceholder}>
-                    {this.state.startDate === ''
-                      ? `Choose Start Date...`
-                      : moment(this.state.startDate).calendar()}
-                  </Text>
-                  <Feather name="chevron-down" size={20} color={'#333'} />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.row}>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: '300'
-                  }}
-                >
-                  End Date
-                </Text>
-              </View>
-              <TouchableOpacity onPress={this._showEndDateTimePicker}>
-                <View style={styles.inputBox}>
-                  <Text style={styles.inputPlaceholder}>
-                    {this.state.endDate === ''
-                      ? `Choose End Date...`
-                      : moment(this.state.endDate).calendar()}
-                  </Text>
-                  <Feather name="chevron-down" size={20} color={'#333'} />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity onPress={this.submit}>
-              <View
-                style={{
-                  backgroundColor: this.valid()
-                    ? colors.BRIGHT_GREEN
-                    : colors.GREY,
-                  height: 50,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}
-              >
-                <Text style={{ color: colors.white, fontSize: 16 }}>
-                  Save Timesheet
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </KeyboardAvoidingView>
         <DateTimePicker
           titleIOS={'Start Date'}
           date={
@@ -265,6 +402,7 @@ export default class AddTimeSheetScreen extends Component {
           visible={this.state.companyModalVisible}
           onSuccess={this.handleChangeCompany}
         />
+        <LoadingModal visible={this.state.loading} />
       </View>
     );
   }
@@ -281,6 +419,15 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderColor: '#CCC',
+    borderWidth: 0.5,
+    borderRadius: 6,
+    backgroundColor: '#F8F8F8'
+  },
+  textInputBox: {
+    marginTop: 5,
+    paddingHorizontal: 10,
+    height: 60,
     borderColor: '#CCC',
     borderWidth: 0.5,
     borderRadius: 6,

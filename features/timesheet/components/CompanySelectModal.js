@@ -48,6 +48,11 @@ export default class CompanySelectModal extends Component {
           selectedValue={this.props.selected}
           onValueChange={this.valueChange}
         >
+          <Picker.Item
+            key={'-- Choose Company --'}
+            label={'-- Choose Company --'}
+            value={null}
+          />
           {this.props.companies.map(comp => {
             return (
               <Picker.Item key={comp.name} label={comp.name} value={comp.id} />
