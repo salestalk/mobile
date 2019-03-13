@@ -116,7 +116,12 @@ export default class AddTimeSheetScreen extends Component {
   };
 
   valid = () => {
-    return this.state.company && this.state.startDate && this.state.endDate;
+    return (
+      this.state.company &&
+      this.state.startDate &&
+      this.state.endDate &&
+      this.state.hours
+    );
   };
 
   submit = () => {
@@ -127,7 +132,7 @@ export default class AddTimeSheetScreen extends Component {
         this.state.id,
         moment.utc(this.state.startDate).format('YYYY-MM-DD hh:mmA'),
         moment.utc(this.state.endDate).format('YYYY-MM-DD hh:mmA'),
-        Math.abs(this.state.endDate - this.state.startDate) / 1000 / 60 / 60,
+        this.state.hours,
         this.state.company,
         this.state.notes
       )
@@ -143,7 +148,6 @@ export default class AddTimeSheetScreen extends Component {
         })
         .catch(e => {
           this.setState({ loading: false });
-          console.log(e);
         });
     }
   };
@@ -288,63 +292,41 @@ export default class AddTimeSheetScreen extends Component {
                       fontWeight: '300'
                     }}
                   >
-                    Notes
-                  </Text>
-                </View>
-                <View style={styles.textInputBox}>
-                  <TextInput
-                    numberOfLines={3}
-                    autoCapitalize={'sentences'}
-                    autoCorrect={true}
-                    value={this.state.notes}
-                    onChangeText={text => this.setState({ notes: text })}
-                    multiline={true}
-                    underlineColorAndroid="transparent"
-                  />
-                </View>
-              </View>
-              <View style={styles.row}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '300'
-                    }}
-                  >
-                    Notes
-                  </Text>
-                </View>
-                <View style={styles.textInputBox}>
-                  <TextInput
-                    numberOfLines={3}
-                    autoCapitalize={'sentences'}
-                    autoCorrect={true}
-                    value={this.state.notes}
-                    onChangeText={text => this.setState({ notes: text })}
-                    multiline={true}
-                    underlineColorAndroid="transparent"
-                  />
-                </View>
-              </View>
-              <View style={styles.row}>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: '300'
-                    }}
-                  >
                     Hours
                   </Text>
                 </View>
-                <View style={styles.textInputBox}>
+                <View style={styles.smallTextInputBox}>
                   <TextInput
                     numberOfLines={1}
                     autoCapitalize={'none'}
                     autoCorrect={true}
-                    value={this.state.hours}
+                    value={this.state.hours.toString()}
                     keyboardType={'decimal-pad'}
                     onChangeText={text => this.setState({ hours: text })}
+                    multiline={true}
+                    underlineColorAndroid="transparent"
+                  />
+                </View>
+              </View>
+
+              <View style={styles.row}>
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: '300'
+                    }}
+                  >
+                    Notes
+                  </Text>
+                </View>
+                <View style={styles.textInputBox}>
+                  <TextInput
+                    numberOfLines={3}
+                    autoCapitalize={'sentences'}
+                    autoCorrect={true}
+                    value={this.state.notes}
+                    onChangeText={text => this.setState({ notes: text })}
                     multiline={true}
                     underlineColorAndroid="transparent"
                   />
@@ -410,7 +392,7 @@ export default class AddTimeSheetScreen extends Component {
 
 const styles = StyleSheet.create({
   row: {
-    marginBottom: 30
+    marginBottom: 20
   },
   inputBox: {
     flexDirection: 'row',
@@ -428,6 +410,15 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingHorizontal: 10,
     height: 60,
+    borderColor: '#CCC',
+    borderWidth: 0.5,
+    borderRadius: 6,
+    backgroundColor: '#F8F8F8'
+  },
+  smallTextInputBox: {
+    marginTop: 5,
+    paddingHorizontal: 10,
+    height: 30,
     borderColor: '#CCC',
     borderWidth: 0.5,
     borderRadius: 6,

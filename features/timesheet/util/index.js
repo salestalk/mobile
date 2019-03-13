@@ -28,7 +28,7 @@ const addTimeSheet = (
   id,
   startDate,
   endDate,
-  hours = 0,
+  hours,
   companyId,
   notes
 ) => {
