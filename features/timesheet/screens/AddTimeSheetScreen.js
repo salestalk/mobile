@@ -111,7 +111,7 @@ export default class AddTimeSheetScreen extends Component {
   showDate = () => {};
 
   trashNewPressed = () => {
-    Haptic.notification(Haptic.NotificationFeedbackType.Success);
+    Haptic.selection();
     this.props.navigation.goBack();
   };
 

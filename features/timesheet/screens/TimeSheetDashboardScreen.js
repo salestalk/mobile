@@ -89,7 +89,7 @@ class TimeSheetDashboardScreen extends Component {
   };
 
   addPressed = () => {
-    Haptic.notification(Haptic.NotificationFeedbackType.Success);
+    Haptic.selection();
     this.props.navigation.navigate('addTimeSheetScreen', {
       refresh: this.refresh
     });
@@ -111,7 +111,7 @@ class TimeSheetDashboardScreen extends Component {
         ) : null}
         <TouchableOpacity
           onPress={() => {
-            Haptic.notification(Haptic.NotificationFeedbackType.Success);
+            Haptic.selection();
             this.props.navigation.navigate('addTimeSheetScreen', {
               existing: item,
               refresh: this.refresh
